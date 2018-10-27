@@ -47,5 +47,5 @@ if __name__ == "__main__":
 			# ignoring the checksum and message tail
         
 			ts =  datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
-			dat_string = "%s\tPM 2.5: %3.3f μg/m³\tPM 10: %3.3f μg/m³\n" % (ts, pm_25, pm_10)
+			dat_string = "%s\tPM 2.5: %3.1f μg/m³\tPM 10: %3.1f μg/m³\n" % (ts, pm_25, pm_10)
 			write_out_dat_stamp(ts, dat_fname, dat_string)
