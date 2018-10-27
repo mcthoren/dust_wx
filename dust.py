@@ -28,4 +28,4 @@ while True:
         # ignoring the checksum and message tail
         
 	ts =  datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
-        print ts,"\tPM 2.5:",pm_25,"μg/m^3  PM 10:",pm_10,"μg/m^3"
+        print ts,"\tPM 2.5:",pm_25,"μg/m³  PM 10:",pm_10,"μg/m³"
