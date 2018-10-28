@@ -83,6 +83,20 @@ def plot(ts, n_plate):
 	graph(date, pm25, "b-", "Particulate Matter", u"PM 2.5 (μg/m³)", "dust_pm25.png")
 	graph(date, pm10, "g-", "Particulate Matter", u"PM 10 (μg/m³)", "dust_pm10.png")
 
+def gen_index(pm25, pm10):
+        plate = wx_dir+"/dust_wx_index.html.template"
+        plate_fd = open(plate, 'r')
+        plate_dat = plate_fd.read()
+        plate_fd.close()
+
+        ts = datetime.datetime.fromtimestamp(time.time()).strftime("%FT%TZ")
+
+        plate_dat = plate_dat.replace("TTTPM25", str(pm25))
+        plate_dat = plate_dat.replace("TTTPM10", str(pm10))
+        plate_dat = plate_dat.replace("DATE", ts)
+
+        write_out(wx_dir+'/plots/dust_wx.html', plate_dat, 'w')
+
 if __name__ == "__main__":
 
 	dat_fname = 'dust.dat'
@@ -123,5 +137,6 @@ if __name__ == "__main__":
 				dat_string = "%s\tPM 2.5: %3.2f μg/m³\tPM 10: %3.2f μg/m³\n" % (ts, pm_25, pm_10)
 				write_out_dat_stamp(ts, dat_fname, dat_string)
 				plot(ts, dat_fname)
+				gen_index(pm_25, pm_10)
 				pm_25_val = pm_10_val = count = 0
 				time0 = time1 = time.time()
