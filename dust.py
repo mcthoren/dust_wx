@@ -4,47 +4,17 @@
 
 # This is a hacked up version of code from: https://gist.github.com/geoffwatts/b0b488b5a5257223ed53
 
-import serial, time, datetime, struct, fileinput
+import sys, serial, time, datetime, struct, fileinput
 import numpy as np
 import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
+sys.path.append('/home/ghz/repos/wxlib')
+import wxlib as wx
+
 wx_dir = "/home/ghz/dust"
-
-def write_out(file_name, data, mode):
-	out_file_fd = open(file_name, mode)
-	out_file_fd.write(data)
-	out_file_fd.close()
-
-def write_out_dat_stamp(ts, n_plate, data):
-	# year directories should be created once a year from cron
-	# that way we aren't unnecessarily checking for one every minute of every day for a year
-
-	f_ts = ts[0:8]
-	y_ts = ts[0:4]
-	write_out(wx_dir+'/data/'+y_ts+'/'+n_plate+'.'+f_ts, data, 'a')
-
-def graph(lx, ly, lfmt, ltitle, lylabel, lfname):
-	plot_d = wx_dir+'/plots/'
-	plt.figure(figsize=(20, 6), dpi=100)
-	plt.grid(True)
-	plt.plot_date(x = lx, y = ly, fmt = lfmt)
-	plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d\n%H:%M:%S'))
-	plt.gca().xaxis.set_major_locator(mdates.HourLocator(interval=4))
-	plt.minorticks_on()
-	plt.gcf().autofmt_xdate()
-	plt.title(ltitle)
-	plt.xlabel("Date (UTC)")
-	plt.ylabel(lylabel)
-	ymin, ymax = plt.ylim()
-	plt.twinx()
-	plt.ylim(ymin, ymax)
-	plt.ylabel(lylabel)
-	plt.tight_layout()
-	plt.savefig(plot_d+lfname)
-	plt.close()
 
 def plot(ts, n_plate):
 	# default font can't do subscript ₂
@@ -80,8 +50,8 @@ def plot(ts, n_plate):
 
 	# graph(date[f_pts : t_pts], pm25[f_pts : t_pts], "b-", "Particulate Matter", u"PM 2.5 (μg/m³)", "dust_pm25.png")
 	# graph(date[f_pts : t_pts], pm10[f_pts : t_pts], "g-", "Particulate Matter", u"PM 10 (μg/m³)", "dust_pm10.png")
-	graph(date, pm25, "b-", "Particulate Matter", u"PM 2.5 (μg/m³)", "dust_pm25.png")
-	graph(date, pm10, "g-", "Particulate Matter", u"PM 10 (μg/m³)", "dust_pm10.png")
+	wx.graph(date, pm25, "b-", "Particulate Matter", u"PM 2.5 (μg/m³)", plot_d+'dust_pm25.png')
+	wx.graph(date, pm10, "g-", "Particulate Matter", u"PM 10 (μg/m³)", plot_d+'dust_pm10.png')
 
 def gen_index(pm25, pm10):
         plate = wx_dir+"/dust_wx_index.html.template"
@@ -95,7 +65,7 @@ def gen_index(pm25, pm10):
         plate_dat = plate_dat.replace("TTTPM10", str("%.2f" % pm10))
         plate_dat = plate_dat.replace("DATE", ts)
 
-        write_out(wx_dir+'/plots/dust_wx.html', plate_dat, 'w')
+        wx.write_out(wx_dir+'/plots/dust_wx.html', plate_dat, 'w')
 
 if __name__ == "__main__":
 
@@ -135,7 +105,7 @@ if __name__ == "__main__":
 				pm_25 = pm_25_val / count
 				pm_10 = pm_10_val / count
 				dat_string = "%s\tPM 2.5: %.2f μg/m³\tPM 10: %.2f μg/m³\n" % (ts, pm_25, pm_10)
-				write_out_dat_stamp(ts, dat_fname, dat_string)
+				wx.write_out_dat_stamp(ts, dat_fname, dat_string, wx_dir)
 				plot(ts, dat_fname)
 				gen_index(pm_25, pm_10)
 				pm_25_val = pm_10_val = count = 0
