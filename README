@@ -1,0 +1,9 @@
+This is started with the gist from here:
+https://gist.github.com/geoffwatts/b0b488b5a5257223ed53
+
+and is for the nova PM sensor SDS011
+
+TODO:
+ + find link for datasheet
+ + correct time/number of lines/files for data collection
+ + add web/copy stuff
