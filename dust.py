@@ -91,8 +91,8 @@ def gen_index(pm25, pm10):
 
         ts = datetime.datetime.fromtimestamp(time.time()).strftime("%FT%TZ")
 
-        plate_dat = plate_dat.replace("TTTPM25", str(pm25))
-        plate_dat = plate_dat.replace("TTTPM10", str(pm10))
+        plate_dat = plate_dat.replace("TTTPM25", str("%.2f" % pm25))
+        plate_dat = plate_dat.replace("TTTPM10", str("%.2f" % pm10))
         plate_dat = plate_dat.replace("DATE", ts)
 
         write_out(wx_dir+'/plots/dust_wx.html', plate_dat, 'w')
@@ -134,7 +134,7 @@ if __name__ == "__main__":
 				ts =  datetime.datetime.fromtimestamp(time1).strftime("%Y%m%d%H%M%S")
 				pm_25 = pm_25_val / count
 				pm_10 = pm_10_val / count
-				dat_string = "%s\tPM 2.5: %3.2f μg/m³\tPM 10: %3.2f μg/m³\n" % (ts, pm_25, pm_10)
+				dat_string = "%s\tPM 2.5: %.2f μg/m³\tPM 10: %.2f μg/m³\n" % (ts, pm_25, pm_10)
 				write_out_dat_stamp(ts, dat_fname, dat_string)
 				plot(ts, dat_fname)
 				gen_index(pm_25, pm_10)
