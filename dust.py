@@ -6,9 +6,6 @@
 
 import sys, serial, time, datetime, struct, fileinput
 import numpy as np
-import matplotlib as mpl
-mpl.use('Agg')
-import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
 sys.path.append('/home/ghz/repos/wxlib')
@@ -17,9 +14,6 @@ import wxlib as wx
 wx_dir = "/home/ghz/dust"
 
 def plot(ts, n_plate):
-	# default font can't do subscript ₂
-	mpl.rc('font', family='DejaVu Sans')
-
 	npoints = 2200 # ~48h
 
 	d_date = ["0000", "0000", "0000", "0000"]
