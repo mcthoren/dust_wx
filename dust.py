@@ -14,7 +14,7 @@ import wxlib as wx
 wx_dir = "/home/ghz/dust"
 
 def plot(ts, n_plate):
-	npoints = 2200 # ~48h
+	npoints = 3000 # ~48h
 
 	d_date = ["0000", "0000", "0000", "0000"]
 	d_year = ["0000", "0000", "0000", "0000"]
@@ -27,13 +27,12 @@ def plot(ts, n_plate):
 
 	dat_f0 = wx_dir+'/data/'+d_year[0]+'/'+n_plate+'.'+d_date[0]
 	dat_f1 = wx_dir+'/data/'+d_year[1]+'/'+n_plate+'.'+d_date[1]
-	# dat_f2 = wx_dir+'/data/'+d_year[2]+'/'+n_plate+'.'+d_date[2]
-	# dat_f3 = wx_dir+'/data/'+d_year[3]+'/'+n_plate+'.'+d_date[3]
+	dat_f2 = wx_dir+'/data/'+d_year[2]+'/'+n_plate+'.'+d_date[2]
+	dat_f3 = wx_dir+'/data/'+d_year[3]+'/'+n_plate+'.'+d_date[3]
 
 	plot_d = wx_dir+'/plots/'
 
-	# dust_dat  = fileinput.input([dat_f3, dat_f2, dat_f1, dat_f0])
-	dust_dat  = fileinput.input([dat_f1, dat_f0])
+	dust_dat  = fileinput.input([dat_f3, dat_f2, dat_f1, dat_f0])
 	date, pm25, pm10 = np.loadtxt(dust_dat, usecols=(0, 3, 7), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
 
 	if date.size < npoints:
@@ -42,10 +41,8 @@ def plot(ts, n_plate):
 	f_pts  = date.size - npoints
 	t_pts  = date.size
 
-	# graph(date[f_pts : t_pts], pm25[f_pts : t_pts], "b-", "Particulate Matter", u"PM 2.5 (μg/m³)", "dust_pm25.png")
-	# graph(date[f_pts : t_pts], pm10[f_pts : t_pts], "g-", "Particulate Matter", u"PM 10 (μg/m³)", "dust_pm10.png")
-	wx.graph(date, pm25, "b-", "Particulate Matter", u"PM 2.5 (μg/m³)", plot_d+'dust_pm25.png')
-	wx.graph(date, pm10, "g-", "Particulate Matter", u"PM 10 (μg/m³)", plot_d+'dust_pm10.png')
+	wx.graph(date[f_pts : t_pts], pm25[f_pts : t_pts], "b-", "Particulate Matter", u"PM 2.5 (μg/m³)", plot_d+'dust_pm25.png')
+	wx.graph(date[f_pts : t_pts], pm10[f_pts : t_pts], "g-", "Particulate Matter", u"PM 10 (μg/m³)", plot_d+'dust_pm10.png')
 
 def gen_index(pm25, pm10):
         plate = wx_dir+"/dust_wx_index.html.template"
