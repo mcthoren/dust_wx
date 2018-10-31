@@ -99,6 +99,6 @@ if __name__ == "__main__":
 				wx.write_out_dat_stamp(ts, dat_fname, dat_string, wx_dir)
 				plot(ts, dat_fname)
 				gen_index(pm_25, pm_10)
-				os.system("/usr/local/bin/rsync -ur --timeout=55 /home/ghz/dust/* wx3@slackology.net:/wx3/")
+				os.system("/usr/local/bin/rsync -ur --timeout=55 /home/ghz/dust/* wx3@wx3.slackology.net:/wx3/")
 				pm_25_val = pm_10_val = count = 0
 				time0 = time1 = time.time()
