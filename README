@@ -9,4 +9,4 @@ http://ecksteinimg.de/Datasheet/SDS011%20laser%20PM2.5%20sensor%20specification-
 TODO:
  + correct time/number of lines/files for data collection
  + add web/copy stuff
- + hook up checksum
+ + hook up tail byte
