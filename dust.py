@@ -92,10 +92,8 @@ if __name__ == "__main__":
 
 			# if it worked move on to checksum
 			b = bytearray(check[0:7])
-
-			# proof the checksum
 			if b[6] != (sum(b[0:6]) % 256):
-				print "checksum fail"
+				print "checksum failed"
 				continue
 
 			# Decode the packet - little endian, 2 shorts for pm2.5 and pm10, 2 ID bytes, checksum, message tail
