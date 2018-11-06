@@ -5,8 +5,3 @@ and is for the nova PM sensor SDS011.
 
 This is the datasheet i've been using:
 http://ecksteinimg.de/Datasheet/SDS011%20laser%20PM2.5%20sensor%20specification-V1.3.pdf
-
-TODO:
- + correct time/number of lines/files for data collection
- + add web/copy stuff
- + hook up tail byte
