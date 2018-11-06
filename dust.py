@@ -82,20 +82,23 @@ if __name__ == "__main__":
 		if lastbyte == "\xAA" and byte == "\xC0":
 			sentence = ser.read(size=8) # Read 8 more bytes
 
+			check = "\x00\x00\x00\x00\x00\x00\x00\x00"
 			check = struct.unpack('<cccccccc', sentence)
-			try:
-				b = bytearray(check[0:7])
-				b[6] == (sum(b[0:6]) % 256)
-			except:
-				# proof the checksum, use sleep to limit inf loop load.
-				print "omg checksum fail"
-				time.sleep(1)
+
+			# check tail byte, should also help eliminate short reads
+			if check[7] != "\xAB":
+				print "tail byte not 0xAB"
 				continue
 
-			if check[7] != "\xAB":
-				print "last byte not 0xAB"
+			# if it worked move on to checksum
+			b = bytearray(check[0:7])
 
-			# Decode the packet - little endian, 2 shorts for pm2.5 and pm10, 2 reserved bytes, checksum, message tail
+			# proof the checksum
+			if b[6] != (sum(b[0:6]) % 256):
+				print "checksum fail"
+				continue
+
+			# Decode the packet - little endian, 2 shorts for pm2.5 and pm10, 2 ID bytes, checksum, message tail
 			readings = struct.unpack('<hhxxcc',sentence)
         
 			pm_25_val += readings[0]/10.0
