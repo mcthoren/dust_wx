@@ -92,6 +92,9 @@ if __name__ == "__main__":
 				time.sleep(1)
 				continue
 
+			if check[7] != "\xAB":
+				print "last byte not 0xAB"
+
 			# Decode the packet - little endian, 2 shorts for pm2.5 and pm10, 2 reserved bytes, checksum, message tail
 			readings = struct.unpack('<hhxxcc',sentence)
         
