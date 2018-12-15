@@ -1,4 +1,4 @@
-#!/usr/local/bin/python2.7
+#!/usr/bin/python
 # -*- coding: UTF-8 -*-
 # this code indented with actual 0x09 tabs
 
@@ -63,7 +63,8 @@ if __name__ == "__main__":
 	dat_fname = 'dust.dat'
 
 	ser = serial.Serial()
-	ser.port = "/dev/ttyU0" # Set this to your serial port
+	# ser.port = "/dev/ttyU0"
+	ser.port = "/dev/ttyUSB0"
 	ser.baudrate = 9600
 
 	ser.open()
@@ -112,6 +113,6 @@ if __name__ == "__main__":
 				wx.write_out_dat_stamp(ts, dat_fname, dat_string, wx_dir)
 				plot(ts, dat_fname)
 				gen_index(pm_25, pm_10)
-				os.system("/usr/local/bin/rsync -ur --timeout=55 /home/ghz/dust/* wx3@wx3.slackology.net:/wx3/")
+				os.system("/usr/bin/rsync -ur --timeout=55 /home/ghz/dust/* wx3@wx3.slackology.net:/wx3/")
 				pm_25_val = pm_10_val = count = 0
 				time0 = time1 = time.time()
