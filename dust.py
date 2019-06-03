@@ -12,6 +12,8 @@ sys.path.append('/home/ghz/repos/wxlib')
 import wxlib as wx
 
 wx_dir = "/home/ghz/dust"
+plot_d = wx_dir+'/plots/'
+
 
 def plot(ts, n_plate):
 	npoints = 3000 # ~48h
@@ -29,8 +31,6 @@ def plot(ts, n_plate):
 	dat_f1 = wx_dir+'/data/'+d_year[1]+'/'+n_plate+'.'+d_date[1]
 	dat_f2 = wx_dir+'/data/'+d_year[2]+'/'+n_plate+'.'+d_date[2]
 	dat_f3 = wx_dir+'/data/'+d_year[3]+'/'+n_plate+'.'+d_date[3]
-
-	plot_d = wx_dir+'/plots/'
 
 	dust_dat  = fileinput.input([dat_f3, dat_f2, dat_f1, dat_f0])
 	date, pm25, pm10 = np.loadtxt(dust_dat, usecols=(0, 3, 7), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
@@ -61,6 +61,7 @@ def gen_index(pm25, pm10):
 if __name__ == "__main__":
 
 	dat_fname = 'dust.dat'
+	wx.proof_dir(plot_d)
 
 	ser = serial.Serial()
 	# ser.port = "/dev/ttyU0"
