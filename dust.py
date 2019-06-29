@@ -18,18 +18,21 @@ plot_d = wx_dir+'/plots/'
 def plot(ts, n_plate):
 	npoints = 3000 # ~48h
 
-	dat_f = ["0000", "0000", "0000", "0000"]
+	dat_f = ["1000", "0100", "0010", "0001"]
 
 	td = datetime.datetime.strptime(ts, "%Y%m%d%H%M%S")
 
 	for i in range(0, 4):
 		d_date = (td - datetime.timedelta(i)).strftime("%Y%m%d")
 		d_year = (td - datetime.timedelta(i)).strftime("%Y")
-		dat_f[3 - 1] = wx_dir+'/data/'+d_year+'/'+n_plate+'.'+d_date
-		wx.proof_dat_f(dat_f[i])
+		dat_f[3 - i] = wx_dir+'/data/'+d_year+'/'+n_plate+'.'+d_date
+		wx.proof_dat_f(dat_f[3 - i])
 
 	dust_dat  = fileinput.input(dat_f)
 	date, pm25, pm10 = np.loadtxt(dust_dat, usecols=(0, 3, 7), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
+
+	if date.size < 4:
+		return 0; # not enough points yet. wait for more
 
 	if date.size < npoints:
 		npoints = date.size - 1
