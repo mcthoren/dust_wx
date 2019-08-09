@@ -6,7 +6,7 @@ and is for the nova PM sensor SDS011.
 This code can be found in the following places:
  + https://github.com/mcthoren/dust_wx			<--code
  + https://wx3.slackology.net/plots/dust_wx.html	<--page
- + https://wx3.slackology.net/				<--code
+ + https://wx3.slackology.net/				<--code, page, plots, data
 
 This is the datasheet i've been using:
 http://ecksteinimg.de/Datasheet/SDS011%20laser%20PM2.5%20sensor%20specification-V1.3.pdf
