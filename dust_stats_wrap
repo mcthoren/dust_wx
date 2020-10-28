@@ -1,0 +1,18 @@
+#!/usr/bin/zsh
+
+# this is meant to be use from a crontab entry like so:
+# min	hour	mday	month	wday	command
+# 59	23	*	*	*	~/dust/dust_stats_wrap
+
+HD="${HOME}/dust/"
+YD="$(date +%Y)"
+DD="$(date +%Y%m%d)"
+DATD="${HD}/data/${YD}"
+
+cd "${HD}" || exit
+
+DUST_AVG="$( ${HD}/dust_stats "${DATD}/dust.dat.${DD}" )"
+
+echo -e "${DD}\t${DUST_AVG}" >> "${HD}/data/dust.day.avg"
+
+/usr/bin/gnuplot "${HD}/dust_bars.gnuplot"
