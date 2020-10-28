@@ -7,14 +7,16 @@ set timefmt "%Y%m%d"
 set xlabel "Time (UTC)" offset 0.0, -1.6
 set format x "%F"
 set grid
-set ylabel "PM (ug/m^3)"
-set y2label "PM (ug/m^3)"
+set ylabel "PM (µg/m³)"
+set y2label "PM (µg/m³)"
 set xtics auto rotate by 30 offset -6.8, -2.2
 set mxtics 
 set grid mxtics
 
 dat_f="~/dust/data/dust.day.avg"
 
-set output "~/dust/plots/dust_day_avgs.png"
-plot dat_f using 1:5 t 'PM 2.5 (ug/m^3)' with boxes linecolor rgb "#0000ff", \
-dat_f using 1:11 t 'PM 10 (ug/m^3)' with boxes linecolor rgb "#00ff00"
+set output "~/dust/plots/pm_2.5_day_avgs.png"
+plot dat_f using 1:6 t 'PM 2.5 (µg/m³)' with boxes linecolor rgb "#0000ff"
+
+set output "~/dust/plots/pm_10_day_avgs.png"
+plot dat_f using 1:12 t 'PM 10 (µg/m³)' with boxes linecolor rgb "#00aa00"
