@@ -1,0 +1,36 @@
+#!/usr/bin/perl -T
+
+use strict;
+use warnings;
+
+sub usage() {
+	print STDERR "usage: $0 filename\n";
+	exit;
+}
+
+unless ($#ARGV == 0) {
+	usage();
+}
+
+my $read_f = $ARGV[0] ;
+
+unless (-e $read_f && -s $read_f) {
+	usage;
+}
+
+my ($num, $pm_10_sum, $pm_25_sum) = (0, 0, 0);
+
+open(IN, "<", $read_f) or die "omg! can't open input file: $read_f";
+
+while (<IN>) {
+	chomp;
+	my ($x, $a, $b, $pm_25, $q, $r, $s, $pm_10, $z) = split;
+	$pm_25_sum += $pm_25; 
+	$pm_10_sum += $pm_10; 
+	$num++;
+}
+
+printf "Avg PM 2.5 level: %.2f µg/m³\t", $pm_25_sum / $num;
+printf "Avg PM 10 level: %.2f µg/m³\n", $pm_10_sum / $num;
+
+close(IN);
