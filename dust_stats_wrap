@@ -11,7 +11,7 @@ DATD="${HD}/data/${YD}"
 
 cd "${HD}" || exit
 
-DUST_AVG="$( ${HD}/dust_stats "${DATD}/dust.dat.${DD}" )"
+DUST_AVG="$( ${HD}/dust_stats "${DATD}/dust.dat.${DD}" )" || exit 1
 
 echo -e "${DD}\t${DUST_AVG}" >> "${HD}/data/dust.day.avg"
 
