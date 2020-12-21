@@ -10,12 +10,12 @@
 </head>
 <body>
 <center>
-<br><h1>PM₂.₅ and PM₁₀ levels from a balcony in Augsburg, Germany</h1>
+<br><h1>PM<sub>2.5</sub> and PM<sub>10</sub> levels from a balcony in Augsburg, Germany</h1>
 See <a href="https://github.com/mcthoren/dust_wx">here</a> for more info.<br>
 <br> Current Conditions (updates every ~60s):
 
 <table borders>
-<tr><td>PM₂₅:</td> <td>TTTPM25 μg/m³</td> <td>PM₁₀:</td>  <td>TTTPM10 μg/m³</td></tr>
+<tr><td>PM<sub>2.5</sub>:</td> <td>TTTPM25 μg/m³</td> <td>PM<sub>10</sub>:</td>  <td>TTTPM10 μg/m³</td></tr>
 <tr><td>Last Update:</td>  <td>DATE</td></tr>
 </table>
 
