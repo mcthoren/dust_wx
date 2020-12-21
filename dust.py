@@ -40,8 +40,8 @@ def plot(ts, n_plate):
 	f_pts  = date.size - npoints
 	t_pts  = date.size
 
-	wx.graph(date[f_pts : t_pts], pm25[f_pts : t_pts], "b-", "Particulate Matter", u"PM 2.5 (μg/m³)", plot_d+'dust_pm25.png')
-	wx.graph(date[f_pts : t_pts], pm10[f_pts : t_pts], "g-", "Particulate Matter", u"PM 10 (μg/m³)", plot_d+'dust_pm10.png')
+	wx.graph(date[f_pts : t_pts], pm25[f_pts : t_pts], "b-", "Particulate Matter", r'$PM_{2.5} (\mu g/m^3)$', plot_d+'dust_pm25.png')
+	wx.graph(date[f_pts : t_pts], pm10[f_pts : t_pts], "g-", "Particulate Matter", r'$PM_{10} (\mu g/m^3)$', plot_d+'dust_pm10.png')
 
 def gen_index(pm25, pm10):
         plate = wx_dir+"/dust_wx_index.html.template"
