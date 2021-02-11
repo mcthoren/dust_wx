@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 # this code indented with actual 0x09 tabs
 
@@ -14,6 +14,9 @@ import wxlib as wx
 wx_dir = "/home/ghz/dust"
 plot_d = wx_dir+'/plots/'
 
+# yet another wonky converter
+def yawc(data):
+	return mdates.strpdate2num('%Y%m%d%H%M%S')(data.decode('utf8'))
 
 def plot(ts, n_plate):
 	npoints = 3000 # ~48h
@@ -29,7 +32,7 @@ def plot(ts, n_plate):
 		wx.proof_dat_f(dat_f[3 - i])
 
 	dust_dat  = fileinput.input(dat_f)
-	date, pm25, pm10 = np.loadtxt(dust_dat, usecols=(0, 3, 7), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
+	date, pm25, pm10 = np.loadtxt(dust_dat, usecols=(0, 3, 7), unpack=True, converters={ 0: yawc})
 
 	if date.size < 4:
 		return 0; # not enough points yet. wait for more
@@ -70,7 +73,7 @@ if __name__ == "__main__":
 	ser.open()
 	ser.flushInput()
 
-	byte, lastbyte = "\x00", "\x00"
+	byte, lastbyte = b"\x00", b"\x00"
 
 	time0 = time1 = time.time()
 	pm_25_val = pm_10_val = count = 0
@@ -80,21 +83,21 @@ if __name__ == "__main__":
 		byte = ser.read(size=1)
     
 		# We got a valid packet header
-		if lastbyte == "\xAA" and byte == "\xC0":
+		if lastbyte == b"\xAA" and byte == b"\xC0":
 			sentence = ser.read(size=8) # Read 8 more bytes
 
-			check = "\x00\x00\x00\x00\x00\x00\x00\x00"
+			check = b"\x00\x00\x00\x00\x00\x00\x00\x00"
 			check = struct.unpack('<cccccccc', sentence)
 
 			# check tail byte, should also help eliminate short reads
-			if check[7] != "\xAB":
-				print "tail byte not 0xAB"
+			if check[7] != b"\xAB":
+				print("tail byte not 0xAB")
 				continue
 
 			# if it worked move on to checksum
-			b = bytearray(check[0:7])
+			b = bytearray(sentence[0:7])
 			if b[6] != (sum(b[0:6]) % 256):
-				print "checksum failed"
+				print("checksum failed")
 				continue
 
 			# Decode the packet - little endian, 2 shorts for pm2.5 and pm10, 2 ID bytes, checksum, message tail
