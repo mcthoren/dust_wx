@@ -29,6 +29,11 @@ $port->purge_all;
 # $port->purge_rx;
 # $port->purge_tx;
 
+# from the docs: https://metacpan.org/pod/Device::SerialPort
+# keeps my load astoundingly lower
+$port->read_const_time(100);	# const time for read (milliseconds)
+$port->read_char_time(5);	# avg time between read char
+
 my $debug = 0;
 my($b0, $ub, $cnt) = (hex("0xde"), hex("0xad"), hex("0xbe"));
 
