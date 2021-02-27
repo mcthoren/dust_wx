@@ -16,14 +16,16 @@ unless (-c  $read_f) {
 	usage;
 }
 
-# open(IN, "<:raw", $read_f) or die "omg! can't open input file: $read_f";
-sysopen(IN, $read_f, O_RDONLY) or die "omg! can't open input file: $read_f";
-IN->flush();
+open(IN, "<:raw", $read_f) or die "omg! can't open input file: $read_f";
+# sysopen(IN, $read_f, O_RDONLY) or die "omg! can't open input file: $read_f";
+# IN->flush();
 
+my $debug = 0;
 my($b0, $ub) = (0, 0);
 while (1) {
 	read(IN, $b0, 1);
 	$ub = unpack('C', $b0);	
+	print "$ub\n" if $ub && $debug;
 	if ($ub and $ub == hex("0xaa")) {
 		read(IN, $b0, 1);
 		$ub = unpack('C', $b0);	
@@ -43,10 +45,9 @@ while (1) {
 			}
 
 			my($pm25, $pm10, $b1, $b2, $b3, $b4) = unpack('vvCCCC', $b0);	
-			# printf "%.2f, %.2f, 0x%02x, 0x%02x, 0x%02x, 0x%02x, 0x%02x\n",
-			#	$pm25 / 10.0, $pm10 / 10.0, $b1, $b2, $b3, $b4, $csum % 256;
+			printf "%.2f, %.2f, 0x%02x, 0x%02x, 0x%02x, 0x%02x, 0x%02x\n",
+				$pm25 / 10.0, $pm10 / 10.0, $b1, $b2, $b3, $b4, $csum % 256 if $debug == 1;
 			printf "%s\tPM_2.5: %.2f µ/m³\tPM_10: %.2f µ/m³\n", $ts, $pm25 / 10.0, $pm10 / 10.0;
 		}
 	}
-	sleep(1);
 }
