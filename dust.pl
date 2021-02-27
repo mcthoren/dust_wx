@@ -1,9 +1,10 @@
-#!/usr/bin/perl -T
+#!/usr/bin/perl
 
 use strict;
 use warnings;
 use Fcntl;
 use POSIX qw(strftime);
+use Device::SerialPort;
 
 sub usage() {
 	print "usage: $0 serial_port\n";
@@ -16,21 +17,31 @@ unless (-c  $read_f) {
 	usage;
 }
 
-open(IN, "<:raw", $read_f) or die "omg! can't open input file: $read_f";
-# sysopen(IN, $read_f, O_RDONLY) or die "omg! can't open input file: $read_f";
-# IN->flush();
+my $port = Device::SerialPort->new($read_f) || die "serial port open failed";
+
+# 9600n81
+$port->baudrate(9600);
+$port->parity("none");
+$port->databits(8);
+$port->stopbits(1);
+
+$port->purge_all;
+# $port->purge_rx;
+# $port->purge_tx;
 
 my $debug = 0;
-my($b0, $ub) = (0, 0);
+my($b0, $ub, $cnt) = (hex("0xde"), hex("0xad"), hex("0xbe"));
+
 while (1) {
-	read(IN, $b0, 1);
+	($cnt, $b0) = $port->read(1);
 	$ub = unpack('C', $b0);	
-	print "$ub\n" if $ub && $debug;
+	printf "ub: 0x%02x\t", $ub if $ub && $debug;
+	printf "cnt: %d\n", $cnt if $cnt && $debug;
 	if ($ub and $ub == hex("0xaa")) {
-		read(IN, $b0, 1);
+		($cnt, $b0) = $port->read(1);
 		$ub = unpack('C', $b0);	
 		if ($ub == hex("0xc0")) {
-			read(IN, $b0, 8);
+			($cnt, $b0) = $port->read(8);
 			my $ts = strftime("%FT%T%Z", gmtime);
 			my ($c0, $c1, $c2, $c3, $c4, $c5, $c6, $c7) = unpack('CCCCCCCC', $b0);	
 			if ($c7 != hex("0xab")) {
