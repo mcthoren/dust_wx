@@ -14,10 +14,6 @@ import wxlib as wx
 wx_dir = "/home/ghz/dust"
 plot_d = wx_dir+'/plots/'
 
-# yet another wonky converter
-def yawc(data):
-	return mdates.strpdate2num('%Y%m%d%H%M%S')(data.decode('utf8'))
-
 def plot(ts, n_plate):
 	npoints = 3000 # ~48h
 
@@ -32,7 +28,7 @@ def plot(ts, n_plate):
 		wx.proof_dat_f(dat_f[3 - i])
 
 	dust_dat  = fileinput.input(dat_f)
-	date, pm25, pm10 = np.loadtxt(dust_dat, usecols=(0, 3, 7), unpack=True, converters={ 0: yawc})
+	date, pm25, pm10 = np.loadtxt(dust_dat, usecols=(0, 3, 7), unpack=True, encoding = u'utf8', converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
 
 	if date.size < 4:
 		return 0; # not enough points yet. wait for more
