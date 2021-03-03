@@ -2,6 +2,10 @@
 
 use strict;
 use warnings;
+use utf8;
+
+binmode(STDIN, ":encoding(utf8)");
+binmode(STDOUT, ":encoding(utf8)");
 
 sub usage() {
 	print STDERR "usage: $0 filename\n";
