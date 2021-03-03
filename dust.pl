@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Fcntl;
+use utf8;
 use POSIX qw(strftime);
 use Device::SerialPort;
 
@@ -36,6 +36,8 @@ $port->read_char_time(5);	# avg time between read char
 
 my $debug = 0;
 my($b0, $ub, $cnt) = (hex("0xde"), hex("0xad"), hex("0xbe"));
+
+binmode(STDOUT, ":encoding(utf8)");
 
 while (1) {
 	($cnt, $b0) = $port->read(1);
