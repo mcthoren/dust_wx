@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 use utf8;
+use open qw(:std :utf8);
+use Encode qw(encode decode);
 use POSIX qw(strftime);
 use Device::SerialPort;
 
@@ -16,6 +18,8 @@ my $read_f = $ARGV[0];
 unless (-c  $read_f) {
 	usage;
 }
+
+@ARGV = map { decode("UTF-8", $_) } @ARGV;
 
 my $port = Device::SerialPort->new($read_f) || die "serial port open failed";
 
@@ -36,8 +40,6 @@ $port->read_char_time(5);	# avg time between read char
 
 my $debug = 0;
 my($b0, $ub, $cnt) = (hex("0xde"), hex("0xad"), hex("0xbe"));
-
-binmode(STDOUT, ":encoding(utf8)");
 
 while (1) {
 	($cnt, $b0) = $port->read(1);
