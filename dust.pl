@@ -13,13 +13,16 @@ sub usage() {
 	exit;
 }
 
+unless ($#ARGV == 0) {
+	usage();
+}
+
+@ARGV = map { decode("UTF-8", $_) } @ARGV;
 my $read_f = $ARGV[0];
 
 unless (-c  $read_f) {
 	usage;
 }
-
-@ARGV = map { decode("UTF-8", $_) } @ARGV;
 
 my $port = Device::SerialPort->new($read_f) || die "serial port open failed";
 
