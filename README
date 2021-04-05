@@ -10,3 +10,17 @@ This code can be found in the following places:
 
 This is the datasheet i've been using:
 http://ecksteinimg.de/Datasheet/SDS011%20laser%20PM2.5%20sensor%20specification-V1.3.pdf
+
+Most of this repo is not necessary for actually collecting and plotting data from the sensor. One really only needs the dust.py script to be up and going. The rest of this noise is explained below:
+
+LICENSE				lic
+README				readme
+data				directory where data is written.
+dust.pl				experimental perl version.
+dust.py				<-- This is the only real necessary file. This collects and graphs data.
+dust_bars.gnuplot		Gnuplot file for doing up daily bar graph of average pm amounts
+dust_raw.pl			Experimental perl version using just the raw serial device.
+dust_stats			perl script for computing daily average dust.
+dust_stats_wrap			wrapper script to be called from cron for doing the daily avg pm bar graph.
+dust_wx_index.html.template	template for the webpage
+plots				directory where graphs are written.
