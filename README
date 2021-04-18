@@ -11,6 +11,9 @@ This code can be found in the following places:
 This is the datasheet i've been using:
 http://ecksteinimg.de/Datasheet/SDS011%20laser%20PM2.5%20sensor%20specification-V1.3.pdf
 
+To get started with dust.pl on debian/raspbian, one will need sth like the following:
+ + apt install libdevice-serialport-perl
+
 Most of this repo is not necessary for actually collecting and plotting data from the sensor. One really only needs the dust.py script to be up and going. The rest of this noise is explained below:
 
 LICENSE				lic
