@@ -19,11 +19,13 @@ Most of this repo is not necessary for actually collecting and plotting data fro
 LICENSE				lic
 README				readme
 data				directory where data is written.
+dust.gnuplot			gnuplot file for the perl graphing side of things
 dust.pl				experimental perl version.
 dust.py				<-- This is the only real necessary file. This collects and graphs data.
 dust_bars.gnuplot		Gnuplot file for doing up daily bar graph of average pm amounts
 dust_raw.pl			Experimental perl version using just the raw serial device.
 dust_stats			perl script for computing daily average dust.
 dust_stats_wrap			wrapper script to be called from cron for doing the daily avg pm bar graph.
+dust_sync			cron script wrapper for the perl side of things.
 dust_wx_index.html.template	template for the webpage
 plots				directory where graphs are written.
