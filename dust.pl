@@ -13,7 +13,7 @@ sub usage() {
 	exit;
 }
 
-my $dat_dir = "/import/home/ghz/repos/dust_wx/data";
+my $data_dir_t = "/import/home/ghz/repos/dust_wx/data";
 
 sub write_out_dat($$) {
 	my ($pm25, $pm10) = @_;
@@ -21,15 +21,16 @@ sub write_out_dat($$) {
 	my $date_y = strftime("%Y", gmtime);
 	my $tdate = strftime("%Y%m%d", gmtime);
 	my $ts = strftime("%FT%T%Z", gmtime);
-	$dat_dir .= "/$date_y";
+	my $data_dir = "$data_dir_t/$date_y";
 
-	unless ( -d $dat_dir) {
-		mkdir $dat_dir or die "couldn't make $dat_dir";
+	unless ( -d $data_dir) {
+		mkdir $data_dir or die "couldn't make $data_dir";
 	}
 
-	my $dat_f = "$dat_dir/$f_tplate.$tdate";
+	my $dat_f = "$data_dir/$f_tplate.$tdate";
 	open(OUT, ">>", $dat_f) or die "omg! can't open output file: $dat_f";
 	printf OUT "%s\tPM_2.5: %.2f µ/m³\tPM_10: %.2f µ/m³\n", $ts, $pm25 / 10.0, $pm10 / 10.0;
+	close OUT;
 }
 
 unless ($#ARGV == 0) {
@@ -43,9 +44,9 @@ unless (-c  $read_f) {
 	usage;
 }
 
-unless ( -d $dat_dir) {
-	print "$dat_dir doesn't exit\n";
-	mkdir $dat_dir or die "couldn't make $dat_dir";
+unless ( -d $data_dir_t) {
+	print "$data_dir_t doesn't exit\n";
+	mkdir $data_dir_t or die "couldn't make $data_dir_t";
 }
 
 my $port = Device::SerialPort->new($read_f) || die "serial port open failed";
@@ -100,8 +101,8 @@ while (1) {
 			$itr++;
 			if ($itr >= 60) {
 				write_out_dat($pm25_t/$itr/10.0, $pm10_t/$itr/10.0);
-				$pm25 = 0;
-				$pm10 = 0;
+				$pm25_t = 0;
+				$pm10_t = 0;
 				$itr = 0;
 			}
 		}
