@@ -13,8 +13,11 @@ sub usage() {
 	exit;
 }
 
+my $dat_dir = "/import/home/ghz/repos/dust_wx/data";
+
 sub write_out_dat($$) {
 	my ($pm25, $pm10) = @_;
+	my $f_tplate = "dust.dat";
 	my $date_y = strftime("%Y", gmtime);
 	my $tdate = strftime("%Y%m%d", gmtime);
 	my $ts = strftime("%FT%T%Z", gmtime);
@@ -24,7 +27,7 @@ sub write_out_dat($$) {
 		mkdir $dat_dir or die "couldn't make $dat_dir";
 	}
 
-	my $dat_f = "$data_dir/$f_tplate.$tdate";
+	my $dat_f = "$dat_dir/$f_tplate.$tdate";
 	open(OUT, ">>", $dat_f) or die "omg! can't open output file: $dat_f";
 	printf OUT "%s\tPM_2.5: %.2f µ/m³\tPM_10: %.2f µ/m³\n", $ts, $pm25 / 10.0, $pm10 / 10.0;
 }
@@ -39,9 +42,6 @@ my $read_f = $ARGV[0];
 unless (-c  $read_f) {
 	usage;
 }
-
-my $f_tplate = "dust.dat"
-my $dat_dir = "/import/home/ghz/repos/dust_wx/data"
 
 unless ( -d $dat_dir) {
 	print "$dat_dir doesn't exit\n";
@@ -98,7 +98,7 @@ while (1) {
 			$pm25_t += $pm25;
 			$pm10_t += $pm10;
 			$itr++;
-			if $itr => 60 {
+			if ($itr >= 60) {
 				write_out_dat($pm25_t/$itr/10.0, $pm10_t/$itr/10.0);
 				$pm25 = 0;
 				$pm10 = 0;
