@@ -5,6 +5,6 @@
 # *	*	*	*	*	~/dust_wx/dust_sync
 
 /import/home/ghz/repos/weather_tools/grab_48h /import/home/ghz/repos/dust_wx/data dust.dat
-# gnuplot /import/home/ghz/repos/dust_wx/dust.gnuplot
+gnuplot /import/home/ghz/repos/dust_wx/dust.gnuplot
 sync
 # rsync this somewhere
