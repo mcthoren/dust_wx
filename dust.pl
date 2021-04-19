@@ -13,6 +13,22 @@ sub usage() {
 	exit;
 }
 
+sub write_out_dat($$) {
+	my ($pm25, $pm10) = @_;
+	my $date_y = strftime("%Y", gmtime);
+	my $tdate = strftime("%Y%m%d", gmtime);
+	my $ts = strftime("%FT%T%Z", gmtime);
+	$dat_dir .= "/$date_y";
+
+	unless ( -d $dat_dir) {
+		mkdir $dat_dir or die "couldn't make $dat_dir";
+	}
+
+	my $dat_f = "$data_dir/$f_tplate.$tdate";
+	open(OUT, ">>", $dat_f) or die "omg! can't open output file: $dat_f";
+	printf OUT "%s\tPM_2.5: %.2f µ/m³\tPM_10: %.2f µ/m³\n", $ts, $pm25 / 10.0, $pm10 / 10.0;
+}
+
 unless ($#ARGV == 0) {
 	usage();
 }
@@ -22,6 +38,14 @@ my $read_f = $ARGV[0];
 
 unless (-c  $read_f) {
 	usage;
+}
+
+my $f_tplate = "dust.dat"
+my $dat_dir = "/import/home/ghz/repos/dust_wx/data"
+
+unless ( -d $dat_dir) {
+	print "$dat_dir doesn't exit\n";
+	mkdir $dat_dir or die "couldn't make $dat_dir";
 }
 
 my $port = Device::SerialPort->new($read_f) || die "serial port open failed";
@@ -42,6 +66,7 @@ $port->read_const_time(100);	# const time for read (milliseconds)
 $port->read_char_time(5);	# avg time between read char
 
 my $debug = 0;
+my ($itr, $pm25_t, $pm10_t) = (0, 0, 0);
 my($b0, $ub, $cnt) = (hex("0xde"), hex("0xad"), hex("0xbe"));
 
 while (1) {
@@ -54,7 +79,6 @@ while (1) {
 		$ub = unpack('C', $b0);	
 		if ($ub == hex("0xc0")) {
 			($cnt, $b0) = $port->read(8);
-			my $ts = strftime("%FT%T%Z", gmtime);
 			my ($c0, $c1, $c2, $c3, $c4, $c5, $c6, $c7) = unpack('CCCCCCCC', $b0);	
 			if ($c7 != hex("0xab")) {
 				printf "tail byte fail! 0x%02x != 0xab\n", $c7;
@@ -70,7 +94,16 @@ while (1) {
 			my($pm25, $pm10, $b1, $b2, $b3, $b4) = unpack('vvCCCC', $b0);	
 			printf "%.2f, %.2f, 0x%02x, 0x%02x, 0x%02x, 0x%02x, 0x%02x\n",
 				$pm25 / 10.0, $pm10 / 10.0, $b1, $b2, $b3, $b4, $csum % 256 if $debug == 1;
-			printf "%s\tPM_2.5: %.2f µ/m³\tPM_10: %.2f µ/m³\n", $ts, $pm25 / 10.0, $pm10 / 10.0;
+
+			$pm25_t += $pm25;
+			$pm10_t += $pm10;
+			$itr++;
+			if $itr => 60 {
+				write_out_dat($pm25_t/$itr/10.0, $pm10_t/$itr/10.0);
+				$pm25 = 0;
+				$pm10 = 0;
+				$itr = 0;
+			}
 		}
 	}
 }
