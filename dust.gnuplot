@@ -10,7 +10,7 @@ set format x "%F\n%TZ"
 set timefmt "%Y-%m-%dT%H:%M:%S"
 set grid xtics
 set grid y2tics
-set term pngcairo size 1900, 512 font ",10"
+set term pngcairo size 2000, 512 font ",10"
 
 set format y "%.1f"
 set format y2 "%.1f"

@@ -11,7 +11,7 @@ set grid
 set xtics auto rotate by 30 offset -6.8, -2.2
 set mxtics 
 set grid mxtics
-set xrange ["20181211":]
+# set xrange ["20181211":]
 
 dat_f="~/dust/data/dust.day.avg"
 
