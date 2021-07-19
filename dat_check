@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# meant to be run periodically from cron to see if everything is ok
+
+CHK_PATH="/import/home/ghz/repos/dust_wx/data/$(date +%Y)/"
+
+find "${CHK_PATH}" -mmin -20 -type f | grep . > /dev/null || {
+	echo "no new data in ${CHK_PATH} in the last 20 min!"
+}

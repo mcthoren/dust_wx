@@ -82,13 +82,15 @@ while (1) {
 			($cnt, $b0) = $port->read(8);
 			my ($c0, $c1, $c2, $c3, $c4, $c5, $c6, $c7) = unpack('CCCCCCCC', $b0);	
 			if ($c7 != hex("0xab")) {
-				printf "tail byte fail! 0x%02x != 0xab\n", $c7;
+				my $ts = strftime("%FT%T%Z", gmtime);
+				printf "$ts: tail byte fail! 0x%02x != 0xab\n", $c7;
 				next;
 			}
 
 			my $csum = $c0 + $c1 + $c2 + $c3 + $c4 + $c5;
 			if ($csum % 256 != $c6){
-				printf "csum mod 256: 0x%02x, checksum: 0x%02x\n", $csum % 256, $c6;
+				my $ts = strftime("%FT%T%Z", gmtime);
+				printf "$ts: csum mod 256: 0x%02x, checksum: 0x%02x\n", $csum % 256, $c6;
 				next;
 			}
 

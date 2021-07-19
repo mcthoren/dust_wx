@@ -12,6 +12,8 @@ set xtics auto rotate by 30 offset -6.8, -2.2
 set mxtics 
 set grid mxtics
 set xrange [:] noextend
+set format y "%.1f"
+set format y2 "%.1f"
 
 dat_f="~/dust/data/dust.day.avg"
 
