@@ -72,6 +72,11 @@ my($b0, $ub, $cnt) = (hex("0xde"), hex("0xad"), hex("0xbe"));
 
 while (1) {
 	($cnt, $b0) = $port->read(1);
+	if (!defined($b0)) {
+		printf "b0 undef\n";
+		sleep(1);
+		next;
+	}
 	$ub = unpack('C', $b0);	
 	printf "ub: 0x%02x\t", $ub if $ub && $debug;
 	printf "cnt: %d\n", $cnt if $cnt && $debug;
