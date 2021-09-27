@@ -14,5 +14,6 @@ cd "${HD}" || exit
 DUST_AVG="$( ${HD}/dust_stats "${DATD}/dust.dat.${DD}" )" || exit 1
 
 echo -e "${DD}\t${DUST_AVG}" >> "${HD}/data/dust.day.avg"
+tail -30 "${HD}/data/dust.day.avg" > "${HD}/data/dust.day.avg.30"
 
 /usr/bin/gnuplot "${HD}/dust_bars.gnuplot"
