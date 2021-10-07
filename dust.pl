@@ -29,7 +29,7 @@ sub write_out_dat($$) {
 
 	my $dat_f = "$data_dir/$f_tplate.$tdate";
 	open(OUT, ">>", $dat_f) or die "omg! can't open output file: $dat_f";
-	printf OUT "%s\tPM 2.5: %.2f µ/m³\tPM 10: %.2f µ/m³\n", $ts, $pm25 / 10.0, $pm10 / 10.0;
+	printf OUT "%s\tPM 2.5: %.2f µ/m³\tPM 10: %.2f µ/m³\n", $ts, $pm25, $pm10;
 	close OUT;
 }
 
@@ -107,7 +107,7 @@ while (1) {
 			$pm10_t += $pm10;
 			$itr++;
 			if ($itr >= 60) {
-				write_out_dat($pm25_t/$itr/10.0, $pm10_t/$itr/10.0);
+				write_out_dat($pm25_t / $itr / 10.0, $pm10_t / $itr / 10.0);
 				$pm25_t = 0;
 				$pm10_t = 0;
 				$itr = 0;
