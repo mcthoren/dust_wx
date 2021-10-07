@@ -99,15 +99,15 @@ if __name__ == "__main__":
 			# Decode the packet - little endian, 2 shorts for pm2.5 and pm10, 2 ID bytes, checksum, message tail
 			readings = struct.unpack('<hhxxcc',sentence)
         
-			pm_25_val += readings[0]/10.0
-			pm_10_val += readings[1]/10.0
+			pm_25_val += readings[0]
+			pm_10_val += readings[1]
 
 			count += 1
 			time1 = time.time()
 			if((time1 - time0) > 60):
 				ts =  datetime.datetime.fromtimestamp(time1).strftime("%Y%m%d%H%M%S")
-				pm_25 = pm_25_val / count
-				pm_10 = pm_10_val / count
+				pm_25 = pm_25_val / count / 10.0
+				pm_10 = pm_10_val / count / 10.0
 				dat_string = "%s\tPM 2.5: %.2f μg/m³\tPM 10: %.2f μg/m³\n" % (ts, pm_25, pm_10)
 				wx.write_out_dat_stamp(ts, dat_fname, dat_string, wx_dir)
 				plot(ts, dat_fname)
