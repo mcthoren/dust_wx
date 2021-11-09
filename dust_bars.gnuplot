@@ -11,6 +11,8 @@ set grid
 set xtics auto rotate by 30 offset -6.8, -2.2
 set mxtics 
 set grid mxtics
+set xtics out
+set ytics out
 set xrange [:] noextend
 set format y "%.1f"
 set format y2 "%.1f"
