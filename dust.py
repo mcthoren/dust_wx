@@ -43,18 +43,18 @@ def plot(ts, n_plate):
 	wx.graph(date[f_pts : t_pts], pm10[f_pts : t_pts], "g-", "Particulate Matter", r'$PM_{10}\ (\mu g/m^3)$', plot_d+'dust_pm10.png')
 
 def gen_index(pm25, pm10):
-        plate = wx_dir+"/dust_wx_index.html.template"
-        plate_fd = open(plate, 'r')
-        plate_dat = plate_fd.read()
-        plate_fd.close()
+	plate = wx_dir+"/dust_wx_index.html.template"
+	plate_fd = open(plate, 'r')
+	plate_dat = plate_fd.read()
+	plate_fd.close()
 
-        ts = datetime.datetime.fromtimestamp(time.time()).strftime("%FT%TZ")
+	ts = time.strftime("%FT%TZ", time.gmtime())
 
-        plate_dat = plate_dat.replace("TTTPM25", str("%.2f" % pm25))
-        plate_dat = plate_dat.replace("TTTPM10", str("%.2f" % pm10))
-        plate_dat = plate_dat.replace("DATE", ts)
+	plate_dat = plate_dat.replace("TTTPM25", str("%.2f" % pm25))
+	plate_dat = plate_dat.replace("TTTPM10", str("%.2f" % pm10))
+	plate_dat = plate_dat.replace("DATE", ts)
 
-        wx.write_out(wx_dir+'/plots/dust_wx.html', plate_dat, 'w')
+	wx.write_out(wx_dir+'/plots/dust_wx.html', plate_dat, 'w')
 
 if __name__ == "__main__":
 
