@@ -105,7 +105,7 @@ if __name__ == "__main__":
 			count += 1
 			time1 = time.time()
 			if((time1 - time0) > 60):
-				ts =  datetime.datetime.fromtimestamp(time1).strftime("%Y%m%d%H%M%S")
+				ts = time.strftime("%Y%m%d%H%M%S", time.gmtime(float(time1)))
 				pm_25 = pm_25_val / count / 10.0
 				pm_10 = pm_10_val / count / 10.0
 				dat_string = "%s\tPM 2.5: %.2f μg/m³\tPM 10: %.2f μg/m³\n" % (ts, pm_25, pm_10)
