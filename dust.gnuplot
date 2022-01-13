@@ -20,7 +20,9 @@ dat_f="/import/home/ghz/repos/dust_wx/data/dust.dat.2-3_day"
 set ylabel "PM_{2.5} (µg/m³)"
 set y2label "PM_{2.5} (µg/m³)"
 set output "/import/home/ghz/repos/dust_wx/plots/pm_25.png"
-plot dat_f using 1:4 title 'Particulate Matter' with lines lw 2 linecolor rgb "#0000dd"
+plot dat_f using 1:4 title 'Particulate Matter' with lines lw 2 linecolor rgb "#0000dd", \
+5 title 'WHO Annual Guidline' with lines lw 1 linecolor rgb "#dd0000", \
+15 title 'WHO 24-Hour Guidline' with lines lw 1 linecolor rgb "#dd00dd"
 
 set ylabel "PM_{10} (µg/m³)"
 set y2label "PM_{10} (µg/m³)"
