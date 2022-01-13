@@ -6,6 +6,7 @@ set y2tics
 set key outside below
 set xlabel "Time (UTC)" offset 0.0, -1.6
 set xdata time;
+set xrange [:] noextend
 set format x "%F\n%TZ"
 set timefmt "%Y-%m-%dT%H:%M:%S"
 set grid xtics
@@ -20,11 +21,13 @@ dat_f="/import/home/ghz/repos/dust_wx/data/dust.dat.2-3_day"
 set ylabel "PM_{2.5} (µg/m³)"
 set y2label "PM_{2.5} (µg/m³)"
 set output "/import/home/ghz/repos/dust_wx/plots/pm_25.png"
-plot dat_f using 1:4 title 'Particulate Matter' with lines lw 2 linecolor rgb "#0000dd", \
-5 title 'WHO Annual Guidline' with lines lw 1 linecolor rgb "#dd0000", \
-15 title 'WHO 24-Hour Guidline' with lines lw 1 linecolor rgb "#dd00dd"
+plot 5 title 'WHO Annual PM_{2.5} Guidline: 5 µg/m³' with lines lw 1 linecolor rgb "#bb0000", \
+15 title 'WHO 24-Hour PM_{2.5} Guidline: 15 µg/m³' with lines lw 1 linecolor rgb "#bb00dd", \
+dat_f using 1:4 title 'Particulate Matter' with lines lw 2 linecolor rgb "#0000dd"
 
 set ylabel "PM_{10} (µg/m³)"
 set y2label "PM_{10} (µg/m³)"
 set output "/import/home/ghz/repos/dust_wx/plots/pm_10.png"
-plot dat_f using 1:8 title 'Particulate Matter' with lines lw 2 linecolor rgb "#00dd00"
+plot 15 title 'WHO Annual PM_{10} Guidline: 15 µg/m³' with lines lw 1 linecolor rgb "#bb0000", \
+45 title 'WHO 24-Hour PM_{10} Guidline: 45 µg/m³' with lines lw 1 linecolor rgb "#bb00dd", \
+dat_f using 1:8 title 'Particulate Matter' with lines lw 2 linecolor rgb "#00dd00"
