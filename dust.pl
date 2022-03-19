@@ -74,6 +74,7 @@ while (1) {
 	($cnt, $b0) = $port->read(1);
 	if (!defined($b0)) {
 		printf "b0 undef\n";
+		$port->purge_all;
 		sleep(1);
 		next;
 	}
