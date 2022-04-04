@@ -71,6 +71,7 @@ my ($itr, $pm25_t, $pm10_t) = (0, 0, 0);
 my($b0, $ub, $cnt) = (hex("0xde"), hex("0xad"), hex("0xbe"));
 
 while (1) {
+	die "serial port stopped existing agian." unless (-c  $read_f);
 	($cnt, $b0) = $port->read(1);
 	if (!defined($b0)) {
 		printf "b0 undef\n";
