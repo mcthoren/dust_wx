@@ -1,0 +1,28 @@
+#!/bin/sh
+# sometimes linux just loses the serial port, and then it comes back as another port.
+# usually it flops around between /dev/ttyUSB0 (where we expect it at boot) and
+# /dev/ttyUSB1, so start there for now.
+
+while true; do 
+	# sanity check
+	[ -c /dev/ttyUSB0 -o -c /dev/ttyUSB1 ] || {
+		echo "all (ports) are lost!"
+		exit 1
+	}
+
+	# are you my serial port?
+	[ -c /dev/ttyUSB0 ] && {
+		/import/home/ghz/dust/dust.pl /dev/ttyUSB0
+	}
+
+	echo "lost ttyUSB0, trying ttyUSB1..."
+	sleep 4
+	
+	# are you my serial port?
+	[ -c /dev/ttyUSB1 ] && {
+		/import/home/ghz/dust/dust.pl /dev/ttyUSB1
+	}
+
+	echo "lost ttyUSB1, trying ttyUSB0..."
+	sleep 4
+done
