@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
 # the plan is, this script is called with a cron job sth like so:
 #minute	hour	mday	month	wday	command
 # *	*	*	*	*	~/dust_wx/dust_sync
 
-LOCK="/import/home/ghz/repos/dust_wx/plots/dust.lock"
+LOCK="${HOME}/repos/dust_wx/plots/dust.lock"
 
 [ -e "${LOCK}" ] && {
 	echo "$0: lock exists" | logger
@@ -14,9 +14,13 @@ LOCK="/import/home/ghz/repos/dust_wx/plots/dust.lock"
 # lock is also checked for and deleted on boot, in case of a crash
 touch "${LOCK}"
 
-/import/home/ghz/repos/weather_tools/grab_48h /import/home/ghz/repos/dust_wx/data dust.dat
-gnuplot /import/home/ghz/repos/dust_wx/dust.gnuplot
+HOST_N="$(hostname -s)"
+"${HOME}/repos/weather_tools/grab_48h" "${HOME}/repos/dust_wx/data" dust.dat
+gnuplot "${HOME}/repos/dust_wx/dust.gnuplot"
 sync
-# rsync this somewhere
+
+[[ "${HOST_N}" == "elf" ]] && {
+	/usr/bin/rsync -ur --timeout=55 /home/ghz/dust/* wx3@wx3.slackology.net:/wx3/
+}
 
 rm "${LOCK}"
