@@ -4,7 +4,7 @@
 
 # This is a hacked up version of code from: https://gist.github.com/geoffwatts/b0b488b5a5257223ed53
 
-import sys, serial, time, datetime, struct
+import sys, serial, time, struct
 import numpy as np
 import matplotlib.dates as mdates
 
