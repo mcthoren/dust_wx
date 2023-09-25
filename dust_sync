@@ -20,7 +20,7 @@ gnuplot "${HOME}/repos/dust_wx/dust.gnuplot"
 sync
 
 [[ "${HOST_N}" == "elf" ]] && {
-	/usr/bin/rsync -ur --timeout=55 /home/ghz/dust/* wx3@wx3.slackology.net:/wx3/
+	/usr/bin/rsync -ur --timeout=55 /home/ghz/dust/* wx3@wx3.slackology.net:/wx3/ 2> /dev/null
 }
 
 rm "${LOCK}"
