@@ -6,7 +6,7 @@ Requires=systemd-udevd.service systemd-udev-settle.service
 [Service]
 User=ghz
 WorkingDirectory=/home/ghz/repos/dust_wx
-ExecStartPre/home/ghz/repos/dust_wx/clean_locks
+ExecStartPre=/home/ghz/repos/dust_wx/clean_locks
 ExecStart=/home/ghz/repos/dust_wx/dust.py
 
 [Install]
