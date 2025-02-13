@@ -1,0 +1,7 @@
+#!/bin/sh
+
+DUST_LOCK="/home/ghz/repos/dust_wx/plots/dust.lock"
+
+[ -f "${DUST_LOCK}" ] && rm "${DUST_LOCK}"
+
+exit 0
