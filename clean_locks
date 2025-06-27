@@ -1,6 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 
-DUST_LOCK="/home/ghz/repos/dust_wx/plots/dust.lock"
+HOST_N="$(hostname -s)"
+
+[[ "${HOST_N}" == "elf" ]] && {
+	DUST_LOCK="/home/ghz/repos/dust_wx/plots/dust.lock"
+}
+
+[[ "${HOST_N}" == "keen" ]] && {
+	DUST_LOCK="/import/home/ghz/repos/dust_wx/plots/dust.lock"
+}
 
 [ -f "${DUST_LOCK}" ] && rm "${DUST_LOCK}"
 
