@@ -79,14 +79,18 @@ while (1) {
 		sleep(1);
 		next;
 	}
+
 	$ub = unpack('C', $b0);	
-	printf "ub: 0x%02x\t", $ub if $ub && $debug;
-	printf "cnt: %d\n", $cnt if $cnt && $debug;
+	printf "ub0: 0x%02x\t", $ub if $ub && $debug;
+	printf "cnt0: %d\n", $cnt if $cnt && $debug;
 	if ($ub and $ub == hex("0xaa")) {
 		($cnt, $b0) = $port->read(1);
 		$ub = unpack('C', $b0);	
+		printf "ub1: 0x%02x\t", $ub if $ub && $debug;
+		printf "cnt1: %d\n", $cnt if $cnt && $debug;
 		if ($ub == hex("0xc0")) {
 			($cnt, $b0) = $port->read(8);
+			printf "cnt2: %d\n", $cnt if $cnt && $debug;
 			my ($c0, $c1, $c2, $c3, $c4, $c5, $c6, $c7) = unpack('CCCCCCCC', $b0);	
 			if ($c7 != hex("0xab")) {
 				my $ts = strftime("%FT%T%Z", gmtime);
