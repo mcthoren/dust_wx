@@ -1,3 +1,4 @@
 data/
-plots/*.png
+plots/*.svg
+plots/dust.lock
 plots/dust_wx.html
