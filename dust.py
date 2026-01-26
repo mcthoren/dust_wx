@@ -10,6 +10,8 @@ hostname = os.uname()[1]
 
 home_dir='/home/ghz'
 
+s_port = "/dev/ttyUSB0"
+
 if hostname == 'keen':
 	home_dir = '/import/home/ghz'
 
@@ -18,6 +20,8 @@ import wxlib as wx
 
 wx_dir = home_dir+'/dust'
 plot_d = wx_dir+'/plots/'
+
+ser = serial.Serial()
 
 def gen_index(pm25, pm10):
 	plate = wx_dir+"/dust_wx_index.html.template"
@@ -33,22 +37,23 @@ def gen_index(pm25, pm10):
 
 	wx.write_out(wx_dir+'/plots/dust_wx.html', plate_dat, 'w')
 
+def init_port(dev):
+	ser.port = dev
+	ser.baudrate = 9600
+	ser.timeout = 2.56
+	ser.open()
+	ser.flushInput()
+
 if __name__ == "__main__":
 
 	dat_fname = 'dust.dat'
 	wx.proof_dir(plot_d)
 
-	ser = serial.Serial()
-	# ser.port = "/dev/ttyU0"
-	ser.port = "/dev/ttyUSB0"
-	ser.baudrate = 9600
-
-	ser.open()
-	ser.flushInput()
+	init_port(s_port)
 
 	byte, lastbyte = b"\x00", b"\x00"
 
-	debug = 1
+	debug = 0
 	time0 = time1 = time.time()
 	pm_25_val = pm_10_val = count = 0
 
@@ -59,8 +64,16 @@ if __name__ == "__main__":
 		lastbyte = byte
 		byte = ser.read(size=1)
     
-		if debug:
-			print("0", end="", flush=True)
+		# if we read null, it's apparently cuz a timeout cuz
+		# the port is stuck again. so reset it.
+		if byte == b'':
+			print("N", end="", flush=True)
+			ser.flushInput()
+			ser.flushOutput()
+			ser.reset_input_buffer()
+			ser.reset_output_buffer()
+			ser.close()
+			init_port(s_port)
 
 		# We got a valid packet header
 		if lastbyte == b"\xAA" and byte == b"\xC0":
